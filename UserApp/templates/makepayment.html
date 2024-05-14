@@ -1,0 +1,21 @@
+{%extends "homepage.html"%}
+{%block content%}
+<h1>Make Payment</h1>
+<form method="post">
+    {%csrf_token%}
+<table class="table">
+    <tr><td>Enter Card No.</td>
+        <td><input type="text" name="card_no"required/></td></tr>
+    <tr><td>Enter CVV No.</td>
+        <td><input type="text" name="cvv" required/></td></tr>
+    <tr><td>Enter Expriry Date</td>
+            <td><input type="text" name="expiry"required/></td></tr>
+    <tr><td>Total Amount</td>
+                <td><input type="text" name="total" value="{{request.session.total}}" readonly/></td></tr>
+    <tr><td><button class="button btn-success" type="submit" >Make Payment</button>
+</td>  <td></td></tr>
+    
+
+</table>
+</form>
+{%endblock%}

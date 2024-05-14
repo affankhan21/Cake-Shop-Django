@@ -1,0 +1,139 @@
+{% extends "homepage.html" %}
+{% block content %}
+<style>
+    /* CSS styles */
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+    }
+
+    .table th, .table td {
+        border: 1px solid #dddddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    .table th {
+        background-color: #f2f2f2;
+    }
+
+    .image {
+        vertical-align: middle;
+    }
+
+    .button {
+        padding: 8px 16px;
+        font-size: 14px;
+        cursor: pointer;
+        border: none;
+        border-radius: 4px;
+    }
+
+    .btn-warning {
+        background-color: #ffc107;
+        color: #000;
+    }
+
+    .btn-info {
+        background-color: #17a2b8;
+        color: #fff;
+    }
+
+    .btn-danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .btn-success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .btn-success:hover, .btn-info:hover, .btn-danger:hover, .btn-warning:hover {
+        opacity: 0.8;
+    }
+
+    h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    hr {
+        border-top: 1px solid #dddddd;
+        margin: 20px 0;
+    }
+
+    a {
+        text-decoration: none;
+    }
+    .total-amount {
+        font-size: 28px; /* Increase font size for emphasis */
+        color: #007bff; /* Change text color to a highlighted color */
+        margin-top: 20px; /* Add some space between the total amount and other elements */
+    }
+</style>
+
+<script type="text/javascript">
+    function increment(tid) {
+        txtQty = document.getElementById(tid);
+        x = parseInt(txtQty.value);
+        if (x < 10) {
+            txtQty.value = x + 1;
+        }
+    }
+    function decrement(tid) {
+        txtQty = document.getElementById(tid);
+        x = parseInt(txtQty.value);
+        if (x > 1) {
+            txtQty.value = x - 1;
+        }
+    }
+</script>
+
+<h1>Cart Items</h1>
+<table class="table">
+    <tr>
+        <th>Cake Name</th>
+        <th>Cake Price</th>
+        <th>Image</th>
+        <th>Qty</th>
+        <th>SubTotal</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>
+    {% for item in items %}
+    <form method="post">
+        {% csrf_token %}
+        <tr>
+            <td>
+                <input type="hidden" name="item_id" value="{{ item.id }}" />
+                {{ item.cake.cake_name }}
+            </td>
+            <td>{{ item.cake.price }}</td>
+            <td><img src="{{ item.cake.image.url }}" class="image" style="width:120px;height:120px" /></td>
+            <td>
+                <button type="button" class="button btn-warning" onclick="decrement('qty{{ item.cake_id }}')">-</button>
+                <input type="text" id="qty{{ item.cake_id }}" value="{{ item.qty }}" name="qty" size="3" />
+                <button type="button" class="button btn-warning" onclick="increment('qty{{ item.cake_id }}')">+</button>
+            </td>
+            <td>{% widthratio item.cake.price 1 item.qty %}</td>
+            <td>
+                <button class="button btn-info" type="submit" name="action" value="edit">
+                    <span class="glyphicon glyphicon-edit" style="font-size: 24px;"></span>
+                </button>
+            </td>
+            <td>
+                <button class="button btn-danger" type="submit" name="action" value="delete">
+                    <span class="glyphicon glyphicon-trash" style="font-size: 24px;"></span>
+                </button>
+            </td>
+        </tr>
+    </form>
+    {% endfor %}
+</table>
+<h1 class="total-amount">Total Amount: {{ request.session.total }}</h1>
+<hr />
+           
+                <h1><a href="/makepayment"><button type="button" class="button btn-success"><span class="glyphicon glyphicon-credit-card"></span> Make Payment</button></a></h1>
+{% endblock %}

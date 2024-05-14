@@ -1,0 +1,95 @@
+{% extends "homepage.html" %}
+
+{% block content %}
+<style>
+    /* Additional CSS styles for the order details */
+    .order-container {
+        background-color: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+
+    .order-date, .total-amount {
+        color: #333;
+        font-size: 1.2em;
+        margin-bottom: 10px;
+    }
+
+    .order-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+    }
+
+    .order-table th {
+        background-color: #FF76CE;
+        padding: 10px;
+        text-align: left;
+        color: white;
+    }
+
+    .order-table td {
+        padding: 10px;
+        border-bottom: 1px solid #ddd;
+        color:red;
+        font-size: large;
+        background-color: #FFFAB7;
+    }
+
+    .order-table td:last-child {
+        border-bottom: none;
+    }
+
+    /* Responsive styling */
+    @media screen and (max-width: 600px) {
+        .order-container {
+            width: 90%;
+        }
+    }
+
+    .total-amount {
+        font-size: 28px;
+        color: #007bff;
+        margin-top: 20px;
+    }
+
+    .order-date {
+        font-size: 28px;
+        color: #ff6f00;
+        margin-top: 20px;
+    }
+
+    .cake-image {
+        height: 150px;
+        width: 150px;
+    }
+</style>
+
+{% for order, item in items.items %}
+<div class="order-container">
+    <h2 class="order-date">Date of Order: {{ order.date_of_order }}</h2>   
+    <h2 class="total-amount">Total  Order Amount: {{ order.amount }}</h2>
+ 
+    <table class="order-table">
+        <tr>
+            <th>Cake Name</th>
+            <th>Cake Image</th>
+            <th>Price</th>
+            <th>Quantity</th>
+        </tr>
+        {% for p in item %}
+        <tr>
+            <td>{{ p.cake.cake_name }}</td>
+            <td><img src="{{ p.cake.image.url }}" alt="{{ p.cake.cake_name }}" class="cake-image"></td>
+            <td>{{ p.cake.price }}</td>
+            <td>{{ p.qty }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+{% endfor %}
+{% endblock %}
+</hr>
